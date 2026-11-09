@@ -1,0 +1,19 @@
+{
+  "name": "farallones-app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "App de seguimiento deportivo · Atlético Deportivo Farallones (Cali)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --env-file=.env --watch server.js"
+  },
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "bcryptjs": "2.4.3",
+    "express": "4.21.2",
+    "jsonwebtoken": "9.0.2",
+    "pg": "8.13.1",
+    "web-push": "3.6.7"
+  }
+}

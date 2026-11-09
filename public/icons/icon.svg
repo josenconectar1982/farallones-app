@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#000"/>
+  <g transform="translate(81 37) scale(1.75)">
+    <defs><clipPath id="c"><path d="M24,22 H176 V118 C176,176 138,206 100,226 C62,206 24,176 24,118 Z"/></clipPath></defs>
+    <path d="M14,12 H186 V118 C186,184 144,218 100,238 C56,218 14,184 14,118 Z" fill="#B0122C"/>
+    <path d="M20,18 H180 V118 C180,180 141,212 100,232 C59,212 20,180 20,118 Z" fill="#000"/>
+    <g clip-path="url(#c)">
+      <rect x="24" y="22" width="152" height="122" fill="#B0122C"/>
+      <path d="M24,144 L24,110 L40,96 L52,104 L66,86 L78,94 L90,80 L104,90 L120,74 L134,88 L150,80 L176,102 L176,144 Z" fill="#6E0A1A"/>
+      <path d="M24,144 L24,126 L42,110 L54,116 L72,84 L82,96 L100,40 L112,70 L121,62 L137,94 L147,86 L176,120 L176,144 Z" fill="#000"/>
+      <path d="M100,40 L110,62 L105,59 L100,66 L96,60 L91.5,62 Z M72,84 L80,94 L76,93 L73,97 L70,93 L66.5,94 Z M121,62 L128,76 L124,74 L120,78 L117.5,72 Z" fill="#fff"/>
+      <rect x="24" y="144" width="152" height="100" fill="#000"/>
+    </g>
+    <g transform="translate(100 180)">
+      <circle r="24" fill="#fff"/>
+      <path d="M0,-9.6 L9.1,-3 L5.6,7.8 L-5.6,7.8 L-9.1,-3 Z" fill="#000"/>
+      <path d="M0,-9.6 L0,-24 M9.1,-3 L22.8,-7.4 M5.6,7.8 L14.1,19.4 M-5.6,7.8 L-14.1,19.4 M-9.1,-3 L-22.8,-7.4" stroke="#000" stroke-width="2.4"/>
+    </g>
+  </g>
+</svg>

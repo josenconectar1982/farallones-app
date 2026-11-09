@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" role="img" aria-label="Escudo Atlético Deportivo Farallones">
+  <defs>
+    <clipPath id="adf-shield"><path d="M24,22 H176 V118 C176,176 138,206 100,226 C62,206 24,176 24,118 Z"/></clipPath>
+  </defs>
+  <path d="M14,12 H186 V118 C186,184 144,218 100,238 C56,218 14,184 14,118 Z" fill="#B0122C"/>
+  <path d="M20,18 H180 V118 C180,180 141,212 100,232 C59,212 20,180 20,118 Z" fill="#000"/>
+  <g clip-path="url(#adf-shield)">
+    <rect x="24" y="22" width="152" height="30" fill="#000"/>
+    <rect x="24" y="52" width="152" height="92" fill="#B0122C"/>
+    <circle cx="140" cy="74" r="10" fill="#E8414F" opacity=".55"/>
+    <path d="M24,144 L24,120 L40,106 L52,114 L66,96 L78,104 L90,90 L104,100 L120,84 L134,98 L150,90 L176,112 L176,144 Z" fill="#6E0A1A"/>
+    <path d="M24,144 L24,132 L42,118 L54,124 L72,96 L82,106 L100,62 L112,86 L121,78 L137,104 L147,96 L176,128 L176,144 Z" fill="#000"/>
+    <path d="M100,62 L108,78 L104,76 L100,82 L97,77 L93.5,78 Z M72,96 L80,104 L76,103 L73,107 L70,103 L67,104 Z M121,78 L127,88 L123,87 L120,90 L117,86 Z" fill="#fff"/>
+    <rect x="24" y="144" width="152" height="26" fill="#fff"/>
+    <rect x="24" y="170" width="152" height="70" fill="#000"/>
+  </g>
+  <text x="100" y="42" text-anchor="middle" fill="#fff" font-family="'Big Shoulders Display','Arial Narrow',sans-serif" font-weight="800" font-size="14" letter-spacing="1.2" textLength="128" lengthAdjust="spacingAndGlyphs">ATLÉTICO DEPORTIVO</text>
+  <text x="100" y="164" text-anchor="middle" fill="#000" font-family="'Big Shoulders Display','Arial Narrow',sans-serif" font-weight="900" font-size="20" letter-spacing="1.5" textLength="132" lengthAdjust="spacingAndGlyphs">FARALLONES</text>
+  <g transform="translate(100 193)">
+    <circle r="15" fill="#fff"/>
+    <path d="M0,-6 L5.7,-1.9 L3.5,4.9 L-3.5,4.9 L-5.7,-1.9 Z" fill="#000"/>
+    <path d="M0,-6 L0,-15 M5.7,-1.9 L14.2,-4.6 M3.5,4.9 L8.8,12.1 M-3.5,4.9 L-8.8,12.1 M-5.7,-1.9 L-14.2,-4.6" stroke="#000" stroke-width="1.6"/>
+    <circle r="15" fill="none" stroke="#000" stroke-width="1.2"/>
+  </g>
+  <text x="100" y="222" text-anchor="middle" fill="#B0122C" font-family="'Big Shoulders Display','Arial Narrow',sans-serif" font-weight="800" font-size="10" letter-spacing="2">CALI</text>
+</svg>
