@@ -154,8 +154,10 @@ async function logout() {
   try {
     const reg = await navigator.serviceWorker?.getRegistration();
     const sub = await reg?.pushManager?.getSubscription();
-    if (sub) { await api('/api/push/unsubscribe', { method: 'POST', body: { endpoint: sub.endpoint } }); await sub.unsubscribe(); }
+    // Solo se desvincula de este usuario; el permiso del teléfono se conserva para el próximo ingreso
+    if (sub) await api('/api/push/unsubscribe', { method: 'POST', body: { endpoint: sub.endpoint } });
   } catch { /* seguimos con la salida */ }
+  pushSynced = false;
   endSession();
   toast('Sesión cerrada');
 }
@@ -901,7 +903,8 @@ function swReady() {
 }
 
 async function enablePush() {
-  const perm = await Notification.requestPermission();
+  safeSet('adf_push_off', null);
+  const perm = Notification.permission === 'granted' ? 'granted' : await Notification.requestPermission();
   if (perm !== 'granted') throw new Error('Debes permitir las notificaciones en tu teléfono');
   const { key } = await api('/api/push/key');
   if (!key) throw new Error('Las notificaciones aún no están configuradas en el servidor');
@@ -911,18 +914,38 @@ async function enablePush() {
 }
 
 async function disablePush() {
+  safeSet('adf_push_off', '1'); // el usuario las apagó a propósito: no se reactivan solas
   const reg = await swReady();
   const sub = await reg.pushManager.getSubscription();
   if (sub) { await api('/api/push/unsubscribe', { method: 'POST', body: { endpoint: sub.endpoint } }); await sub.unsubscribe(); }
 }
 
+// Si el teléfono ya dio permiso, se vuelve a conectar solo cada vez que alguien entra.
+// Así las notificaciones quedan fijas hasta que el usuario las desactive en Perfil.
+let pushSynced = false;
+async function syncPush() {
+  if (pushSynced || !state.token) return;
+  if (!('serviceWorker' in navigator) || !('PushManager' in window) || !('Notification' in window)) return;
+  if (Notification.permission !== 'granted' || safeGet('adf_push_off') === '1') return;
+  pushSynced = true;
+  try {
+    const { key } = await api('/api/push/key');
+    if (!key) return;
+    const reg = await swReady();
+    let sub = await reg.pushManager.getSubscription();
+    if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: urlB64ToUint8Array(key) });
+    await api('/api/push/subscribe', { method: 'POST', body: sub.toJSON() });
+  } catch { pushSynced = false; }
+}
+
 async function mountPushCard(slot, onlyIfOff) {
+  await syncPush();
   if (!slot) return;
   let status;
   try { status = await pushStatus(); } catch { status = 'unsupported'; }
-  if (onlyIfOff && (status === 'on' || status === 'unsupported')) { slot.innerHTML = ''; return; }
+  if (onlyIfOff && (status === 'on' || status === 'unsupported' || (status === 'off' && safeGet('adf_push_off') === '1'))) { slot.innerHTML = ''; return; }
   const texts = {
-    on: ['Notificaciones activas', 'Te avisamos en este teléfono cuando haya seguimiento semanal o un aviso nuevo.', '<button class="btn btn-ghost btn-sm" data-test>Enviar prueba</button><button class="btn btn-ghost btn-sm" data-off>Desactivar</button>'],
+    on: ['Notificaciones activas', 'Quedan activas en este teléfono aunque cierres la app. Puedes desactivarlas cuando quieras.', '<button class="btn btn-ghost btn-sm" data-test>Enviar prueba</button><button class="btn btn-ghost btn-sm" data-off>Desactivar</button>'],
     off: ['Activa las notificaciones', state.user.role === 'padre' ? 'Recibe en tu teléfono el seguimiento semanal de tu hijo y los avisos de la escuela.' : 'Recibe en tu teléfono los avisos de la escuela.', '<button class="btn btn-primary btn-sm" data-on>Activar notificaciones</button>'],
     denied: ['Notificaciones bloqueadas', 'Las bloqueaste en este navegador. Actívalas desde los ajustes del navegador o del teléfono para este sitio.', ''],
     'ios-install': ['Instala la app para recibir notificaciones', 'En iPhone las notificaciones funcionan cuando agregas la app a tu pantalla de inicio (iOS 16.4 o superior).', '<button class="btn btn-primary btn-sm" data-install>Ver cómo instalar</button>'],
@@ -1020,6 +1043,7 @@ async function render() {
     shell(`${backBtn('#/inicio', 'Ir al inicio')}<div class="card">${emptyState('No se pudo cargar', err.message, '<button class="btn btn-dark" onclick="location.reload()">Reintentar</button>')}</div>`, '');
   }
   refreshUnread();
+  syncPush();
 }
 
 window.addEventListener('hashchange', render);
