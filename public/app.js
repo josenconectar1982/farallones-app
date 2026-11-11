@@ -9,7 +9,7 @@ const AREAS = [
   { key: 'juego', name: 'Juego y decisiones', items: [['posicionamiento', 'Ubicación en la cancha'], ['decisiones', 'Toma de decisiones']] },
   { key: 'valores', name: 'Actitud y valores', items: [['disciplina', 'Disciplina'], ['companerismo', 'Compañerismo'], ['esfuerzo', 'Esfuerzo']] },
 ];
-const AREA_COLORS = ['#B0122C', '#000000', '#8C8589', '#E8414F'];
+const AREA_COLORS = ['#D3212A', '#1A4073', '#7A8AA0', '#4A90D9'];
 // Los niveles describen el proceso, no califican: así lo leen los padres
 const LEVELS = ['', 'Iniciando', 'En proceso', 'Avanzando', 'Consolidado', 'Destacado'];
 const ROLE_NAMES = { admin: 'Administración', profesor: 'Profesor', padre: 'Familia' };
@@ -175,7 +175,7 @@ function shell(html, tab) {
     <header class="topbar">
       <div class="topbar-inner">
         <a class="brand" href="#/inicio" aria-label="Ir al inicio">
-          <img src="/icons/crest.svg" alt="">
+          <img src="/icons/crest.png" alt="">
           <span><b>Farallones</b><small>${esc(ROLE_NAMES[u.role])} · ${esc(firstName(u.name))}</small></span>
         </a>
         <a class="icon-btn" href="#/notificaciones" aria-label="Notificaciones">${I.bell}<span class="dot" id="unread-dot" ${state.unread ? '' : 'hidden'}>${state.unread > 9 ? '9+' : state.unread}</span></a>
@@ -212,7 +212,7 @@ function renderLogin() {
   $('#app').innerHTML = `
     <div class="login">
       <div class="login-box">
-        <img class="crest" src="/icons/crest.svg" alt="Escudo de Atlético Deportivo Farallones">
+        <img class="crest" src="/icons/crest.png" alt="Escudo de Atlético Deportivo Farallones">
         <h1>Seguimiento Farallones</h1>
         <p>Ingresa con el correo y la contraseña que te entregó la escuela.</p>
         <form class="card" id="login-form" novalidate>
@@ -286,7 +286,7 @@ async function renderParentHome() {
       <h2>${kids.length === 1 ? 'Tu jugador' : 'Tus jugadores'}</h2>
       ${kids.length ? `<div class="list">${kids.map((p) => `
         <a class="list-item" href="#/jugador/${p.id}">
-          <span class="avatar is-crimson">${esc(initials(p.full_name))}</span>
+          <span class="avatar is-red">${esc(initials(p.full_name))}</span>
           <span class="grow"><span class="title">${esc(p.full_name)}</span><span class="sub">${esc(p.category_name || '')}${p.coach_name ? ` · Profe ${esc(firstName(p.coach_name))}` : ''}</span></span>
           ${p.last_week ? `<span class="chip chip-ok">Semana ${esc(fmtDay(p.last_week))}</span>` : '<span class="chip chip-line">Sin reportes</span>'}
         </a>`).join('')}</div>`
@@ -439,8 +439,8 @@ function chartHTML(evals) {
   const x = (i) => L + (i * (W - L - R)) / (data.length - 1);
   const y = (v) => T + ((5 - v) * (H - T - B)) / 4;
   let g = '';
-  for (let v = 1; v <= 5; v++) g += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="#E4DEE0"/><text x="${L - 8}" y="${y(v) + 4}" text-anchor="end" font-size="11" fill="#6B6569">${LEVELS[v]}</text>`;
-  data.forEach((ev, i) => { g += `<text x="${x(i)}" y="${H - 10}" text-anchor="middle" font-size="11" fill="#6B6569">${esc(fmtDay(ev.week_start))}</text>`; });
+  for (let v = 1; v <= 5; v++) g += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="#DCE3EC"/><text x="${L - 8}" y="${y(v) + 4}" text-anchor="end" font-size="11" fill="#5E6B7D">${LEVELS[v]}</text>`;
+  data.forEach((ev, i) => { g += `<text x="${x(i)}" y="${H - 10}" text-anchor="middle" font-size="11" fill="#5E6B7D">${esc(fmtDay(ev.week_start))}</text>`; });
   AREAS.forEach((a, ai) => {
     const pts = data.map((ev, i) => [x(i), areaAvg(ev.scores, a)]).filter((p) => p[1] !== null);
     if (!pts.length) return;
@@ -464,7 +464,7 @@ async function renderPlayer(id) {
     ${backBtn(role === 'padre' ? '#/inicio' : '#/jugadores')}
     <div class="player-hero">
       ${p.dorsal !== null && p.dorsal !== undefined ? `<span class="dorsal" aria-hidden="true">${esc(p.dorsal)}</span>` : ''}
-      <span class="chip chip-dark" style="background:var(--crimson)">${esc(p.category_name || 'Sin categoría')}</span>
+      <span class="chip chip-dark" style="background:var(--red)">${esc(p.category_name || 'Sin categoría')}</span>
       <h1>${esc(p.full_name)}</h1>
       <div class="meta">
         ${a !== null ? `<span>${a} años</span>` : ''}
@@ -553,7 +553,7 @@ async function renderEvaluationForm(id, weekParam) {
         <h3>Cómo le fue</h3>
         <div class="legend-levels" style="margin:6px 0 4px">${LEVELS.slice(1).map((l, i) => `<span><b>${i + 1}</b> ${l}</span>`).join('')}</div>
         <p class="muted small">Toca el nivel que mejor describe la semana. Puedes dejar en blanco lo que no se trabajó.</p>
-        ${AREAS.map((a) => `<div style="margin-top:14px"><h3 style="font-size:1.1rem;color:var(--crimson)">${esc(a.name)}</h3>
+        ${AREAS.map((a) => `<div style="margin-top:14px"><h3 style="font-size:1.1rem;color:var(--red)">${esc(a.name)}</h3>
           ${a.items.map(([k, label]) => `<div class="skill"><div class="skill-name">${esc(label)}<em data-lv="${k}"></em></div>
             <div class="levels" role="radiogroup" aria-label="${esc(label)}">${[1, 2, 3, 4, 5].map((v) => `<label><input type="radio" name="s_${k}" value="${v}" aria-label="${LEVELS[v]}"><span>${v}</span></label>`).join('')}</div></div>`).join('')}
         </div>`).join('')}
@@ -718,7 +718,7 @@ async function renderAdmin(sub = 'usuarios') {
       <div class="page-head"><div><h1>Gestión</h1><p>Categorías por edad y su profesor a cargo.</p></div><button class="btn btn-primary" id="add-cat" type="button">${I.plus}Nueva categoría</button></div>
       ${tabs}
       <div class="list">${cats.map((c) => `<button class="list-item" type="button" data-cat-id="${c.id}">
-        <span class="avatar is-crimson">${c.age_from ?? '–'}</span>
+        <span class="avatar is-red">${c.age_from ?? '–'}</span>
         <span class="grow"><span class="title">${esc(c.name)}${c.age_from ? ` · ${c.age_from} a ${c.age_to} años` : ''}</span>
         <span class="sub">${c.coach_name ? `Profe ${esc(c.coach_name)}` : 'Sin profesor asignado'}${c.schedule ? ` · ${esc(c.schedule)}` : ''}</span></span>
         <span class="chip chip-line">${c.players} jug.</span></button>`).join('') || emptyState('Sin categorías', 'Crea la primera categoría.')}</div>`, 'gestion');
@@ -741,7 +741,7 @@ async function renderAdmin(sub = 'usuarios') {
     const t = $('#u-search').value.trim().toLowerCase();
     const list = users.filter((u) => (roleFilter === 'all' || u.role === roleFilter) && (u.name.toLowerCase().includes(t) || u.email.includes(t)));
     $('#u-list').innerHTML = list.length ? `<div class="list">${list.map((u) => `<button class="list-item" type="button" data-user-id="${u.id}">
-      <span class="avatar ${u.role === 'padre' ? '' : 'is-crimson'}">${esc(initials(u.name))}</span>
+      <span class="avatar ${u.role === 'padre' ? '' : 'is-red'}">${esc(initials(u.name))}</span>
       <span class="grow"><span class="title">${esc(u.name)}</span><span class="sub">${esc(u.email)}${u.phone ? ` · ${esc(u.phone)}` : ''}</span></span>
       <span class="chip ${u.active ? 'chip-line' : 'chip-warn'}">${u.active ? esc(ROLE_NAMES[u.role]) : 'Inactivo'}</span></button>`).join('')}</div>`
       : `<div class="card">${emptyState('Sin resultados', 'Prueba con otro nombre o perfil.')}</div>`;
@@ -851,7 +851,7 @@ async function renderProfile() {
   shell(`
     <div class="page-head"><div><h1>Perfil</h1><p>${esc(ROLE_NAMES[u.role])}</p></div></div>
     <div class="card" style="display:flex;gap:14px;align-items:center">
-      <span class="avatar is-crimson" style="width:56px;height:56px;font-size:1.4rem">${esc(initials(u.name))}</span>
+      <span class="avatar is-red" style="width:56px;height:56px;font-size:1.4rem">${esc(initials(u.name))}</span>
       <div><strong style="font-size:1.1rem">${esc(u.name)}</strong><br><span class="muted">${esc(u.email)}</span>${u.phone ? `<br><span class="muted">${esc(u.phone)}</span>` : ''}</div>
     </div>
     <div id="push-slot"></div>
@@ -951,7 +951,7 @@ async function mountPushCard(slot, onlyIfOff) {
     'ios-install': ['Instala la app para recibir notificaciones', 'En iPhone las notificaciones funcionan cuando agregas la app a tu pantalla de inicio (iOS 16.4 o superior).', '<button class="btn btn-primary btn-sm" data-install>Ver cómo instalar</button>'],
     unsupported: ['Notificaciones no disponibles', 'Este navegador no permite notificaciones. Prueba con Chrome en Android o instala la app en tu iPhone.', ''],
   }[status];
-  slot.innerHTML = `<div class="card" style="margin-top:14px"><div class="install-hint">${I.bell.replace('<svg', '<svg style="width:34px;height:34px;color:var(--crimson);flex:none"')}
+  slot.innerHTML = `<div class="card" style="margin-top:14px"><div class="install-hint">${I.bell.replace('<svg', '<svg style="width:34px;height:34px;color:var(--red);flex:none"')}
     <div><strong>${texts[0]}</strong><p class="muted small" style="margin:2px 0 8px">${texts[1]}</p><div class="row-actions">${texts[2]}</div></div></div></div>`;
   $('[data-on]', slot)?.addEventListener('click', async (e) => {
     await withBusy(e.currentTarget, async () => {

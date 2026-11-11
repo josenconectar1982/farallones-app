@@ -1,7 +1,7 @@
 // Service worker · Atlético Deportivo Farallones
-const CACHE = 'adf-app-v2';
+const CACHE = 'adf-app-v3';
 const SHELL = ['/', '/index.html', '/styles.css', '/app.js', '/manifest.webmanifest',
-  '/icons/icon-192.png', '/icons/icon-512.png', '/icons/crest.svg', '/icons/badge-96.png'];
+  '/icons/icon-192.png', '/icons/icon-512.png', '/icons/crest.png', '/icons/badge-96.png'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));
